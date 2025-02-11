@@ -1,0 +1,3 @@
+# Automatic Video Editor in Python
+
+...
