@@ -82,6 +82,8 @@ class MainWindow(QMainWindow):
 
         self.__extract_audio()
 
+        self.__remove_noise()
+
     def on_video_path_clicked(self):
         path = QFileDialog()
         text_path = path.getOpenFileName(
@@ -115,7 +117,7 @@ class MainWindow(QMainWindow):
 
     def __remove_noise(self):
         audio_path = Path(self.video_field.text()).parent / \
-            'sources' / 'audio.wav'
+            'sources' / 'audio-extract.mp3'
         remove_noise = RemoveNoise(audio_path)
         remove_noise_process = remove_noise.process()
 
