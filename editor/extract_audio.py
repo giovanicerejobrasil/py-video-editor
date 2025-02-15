@@ -1,3 +1,4 @@
+import os
 from moviepy import VideoFileClip  # type: ignore
 
 
@@ -7,19 +8,31 @@ class ExtractAudio():
         self.audio_path_output = audio_path_output
         self.video = VideoFileClip(video_path)
 
-    def process(self) -> None:
-        self.__extract_audio()
-        self.__save_audio()
+    def process(self) -> str:
+        ea = self.__extract_audio()
+        sa = self.__save_audio()
 
-    def __extract_audio(self) -> None:
-        self.audio = self.video.audio
+        return f'{ea} \n{sa}'
 
-    def __save_audio(self) -> None:
+    def __extract_audio(self) -> str:
         try:
-            self.audio.write_audiofile(self.audio_path_output)
+            self.audio = self.video.audio
 
-            print('Audio extracted successfully')
+            return 'Audio extracted successfully'
+        except Exception as error:
+            return f'ERROR: {error}'
+
+    def __save_audio(self) -> str:
+        try:
+            if not os.path.isdir(self.audio_path_output):
+                os.mkdir(self.audio_path_output)
+
+            self.audio.write_audiofile(
+                f'{self.audio_path_output}/audio-extract.mp3')
+
             self.video.close()
             self.audio.close()
+
+            return 'Audio saved successfully'
         except Exception as error:
-            print(f'ERROR: {error}')
+            return f'ERROR: {error}'
